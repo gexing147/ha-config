@@ -108,6 +108,6 @@ tts:
 # Cloud
 cloud:
 
-group: !include groups.yaml
+group: !include_dir_merge_named  group
 automation: !include automations.yaml
 script: !include scripts.yaml

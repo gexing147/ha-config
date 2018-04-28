@@ -1,0 +1,8 @@
+Family:
+  entities:
+    - device_tracker.gexin_bt
+    - device_tracker.annla_bt
+    - device_tracker.gexin_wifi
+    - device_tracker.annla_iphone
+    - device_tracker.pi_fda50693a4e24fb1afcfc6eb07647825
+    - device_tracker.pi_899047b7ed3543048d4e5a35878dbe2b
