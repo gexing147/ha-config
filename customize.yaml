@@ -1,0 +1,23 @@
+﻿
+switch.wall_switch_ln_158d0001f9ab49:
+  friendly_name: 书房灯
+switch.wall_switch_ln_158d00019d02de:
+  friendly_name: 主卧灯
+switch.wall_switch_ln_right_158d0001a2cb25:
+  friendly_name: 餐厅灯
+switch.wall_switch_ln_left_158d0001a2cb25:
+  friendly_name: 客厅灯
+switch.wall_switch_ln_left_158d00019cf92a:
+  friendly_name: 沙发筒灯
+switch.wall_switch_ln_right_158d00019cf92a:
+  friendly_name: 电视筒灯
+switch.wall_switch_ln_158d00019d0241:
+  friendly_name: 次卧灯
+switch.wall_switch_ln_158d00019d0a72:
+  friendly_name: 过道灯
+switch.wall_switch_ln_158d00019d0212:
+  friendly_name: 阳台灯
+switch.wall_switch_ln_right_158d00019cf80f:
+  friendly_name: 厨房右灯
+switch.wall_switch_ln_left_158d00019cf80f:
+  friendly_name: 厨房左灯

@@ -1,0 +1,113 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 29.5173
+  longitude: 106.516
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Asia/Shanghai
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+logger:
+  default: error
+  logs:
+    homeassistant.components.xiaomi_aqara: debug
+
+mqtt:
+  broker: 192.168.123.128
+  port: 1883
+  username: pi
+  password: raspberry    
+  
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.123.0/24
+    home_interval: 1
+
+  - platform: owntracks
+    max_gps_accuracy: 200
+
+#  - platform: bluetooth_le_tracker
+  
+xiaomi_aqara:
+  gateways:
+    - mac: 286c0785ed4d
+      key: xrqq1hnjcx4d2uuo
+      
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.123.181
+    token: 34595a446c7666526d31536f7338726f
+    
+switch:
+  - platform: broadlink
+    host: 192.168.123.214
+    mac: '34:EA:34:58:71:F9'
+    timeout: 15
+    switches:
+      drying_rack:
+        command_on: 'sgAIAg0PDQ8NRg0cGg4NGxsOGg4NHA0cGg4aDhsOGg4NHA0bGg8NGxsODRsaDxoOGg8aDhsOGg4aDxoOGg4bDhoOGw4aDhsOGg8aDhoOGw4aDhsOGg8aDhoOGg8NGxoPGg4aDxoOGg8aAAFcDQ8NDg5GDRsaDwwcGg8aDg0bDRwaDhsOGg4bDg0bDRwaDg0cGg8MHBoOGg8aDhoOGw4aDxoOGg8aDhoOGw4aDhsOGg8aDhoOGw4aDhsOGg4bDhoOGw4aDg0cGg4aDxoOGg8aDhoAAVwNDw0PDUYNHBoODRsbDhoODRwNGxoPGg4bDhoODRwNGxsODRsaDw0bGg8aDhsNGw4aDhsOGg8aDhoOGw4aDxoOGg4bDhoOGw4aDhsOGg4bDhoPGg4aDhsODRsaDxoOGw4aDhoPGgABXA4PDA8NRg4bGg4NHBoOGg8NGw0cGg4aDxoOGg8NGw0cGg4NHBoODRwaDhoOGw4aDhsOGg4aDxoOGw4aDhsOGg4aDxoOGg8aDhoPGg4aDxoOGw4aDhoPGg4NHBoOGg8aDhoOGg8aAAFdDQ8NDw1GDRsaDw0bGg8aDg0cDRsaDhsOGg4bDg0cDBwaDwwcGg4NHBoOGw4aDhsOGg4aDxoOGg8aDhsOGg4aDxoOGg8aDhoOGw4aDhsOGg4bDhoOGw4aDwwcGg4bDhoOGw4aDhsABdw='
+        command_off: 'sgBwAg0PDQ8NRg0cGg4NHBoOGg8NGw0cGg4aDhoPGg8MHA0bGw4NGxoPDRsbDhoOGg8aDhsOGg4aDxoOGg8aDhoPGg4aDxoOGg4aDxoPGg4aDhsOGg4aDxoODhsaDhoPGg4aDxoOGg8aAAFcDQ4NEAxGDhsaDg0cGg8aDg0bDRwaDhoPGg4aDw0bDRwaDg0cGg4NHBoOGg4aDxoPGg4aDhsOGg8aDhoOGg8aDhoPGg4aDxoOGg8aDhoPGg4aDxoOGg8NGxoPGg4aDhsOGg4bDhoAAVwNDw0PDUYNGxoODRwaDxoODRwMHBoOGg8aDhoPDRwMHBoPDBwaDg0cGg4aDxoOGg8aDhoPGg4aDxoOGg8aDhoPGg4aDhsOGg4aDxoOGw4aDxoOGg4aDwwcGg8aDhoPGg4bDhoOGgABXA0PDQ8NRg0bGw4MHBoPGg4NHA0bGg8aDhoPGg4NHAwcGg8NGxoODRwaDhoPGg4aDxoPGg4aDxoOGg4aDxoOGg8aDhsOGg4aDhsOGg8aDhoPGg4aDxoODRsaDxoOGg8aDhoPGg8aAAFcDQ8NDw1GDRsaDw0bGw4aDg0cDRsaDxoOGw4aDg0cDRsaDwwcGg8NGxoPGg4aDhsOGg4bDhoPGg4aDhsOGg4aDxoOGg8aDhoPGg4aDxoOGg4aDxoPGg4NHBoOGg8aDhoPGg4aDhoAAV0NDw0PDUYNGxoPDRsaDxoODRwNGxsOGg4aDxoODRwNGxoPDRsaDwwcGg8aDhoPGg4aDhsOGg4bDhoOGg8aDhoPGg4bDhoOGg8aDxkPGg4aDhsOGg8aDg0bGg8aDhsOGg8aDhoPGgAF3AAAAAAAAAAA'
+      drying_rack_light:
+        command_on: 'sQAIAg4NDw0ORQ8aGw0OGxsNGw4OGg4bGw0cDRsNHA0NGw4bGw0OGxsNDhocDRsOGw0bDRwNGw4bDRsNHA0bDRwNGw0cDRsNHA0bDRwNGw0bDhsNGw4bDRsNDxobDg0bGw4bDRwMHA0bAAFbDg4ODg5FDhsbDQ4aHA0bDQ4bDhobDhsNHA0bDQ4bDhobDg4aGw4NGxwNGw0bDhsNGw0cDRsOGw0bDRwNGw0cDRsNHA0bDRwNGw0cDRsNGw4bDRwNGw0OGxsNDhsbDRsOGw0bDRwAAVsODg0ODkYOGhsNDxobDRwNDhoOGxsNHA0bDRwNDhoOGxsNDhsbDQ4bGw0bDhsNHA0bDRsOGw0bDRwNGw0cDRsOGw0bDRwNGw0cDRsNGw4bDRwNGw0cDQ4aGw4OGhwNGw0bDhsNHAABWw4ODg4ORQ4aHA0OGhwNGw0OGw4aHA0bDRwNGw0OGw4aGw4NGxsNDxobDhsNGw0cDRsNHA0bDRwNGw0cDRsNHA0bDRsOGw0cDRsNGw4bDRwNGw0bDhsNDhsbDQ4aHA0bDhsNGw0cAAFbDw0ODg5FDhsbDQ4bGw0bDQ8aDhsbDRsOGw0cDA8aDhocDQ4aHA0OGxsNGw0cDRsNHA0bDRsOGw0cDRsNHAwcDRwNGw0bDhsNGw0cDRsNHA0bDRwNGw0PGhsNDhsbDRsOGw0cDRsABdw='
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+#history:
+
+# View all events in a logbook
+#logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

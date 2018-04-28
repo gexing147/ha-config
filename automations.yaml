@@ -1,0 +1,151 @@
+- id: drying_rack_up
+  alias: drying rack up
+  initial_state: 'on'
+  trigger:
+  - platform: event
+    event_type: click
+    event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_left_158d0001639c9d
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.drying_rack
+
+- id: drying_rack_down
+  alias: drying rack down
+  initial_state: 'on'
+  trigger:
+  - platform: event
+    event_type: click
+    event_data:
+      click_type: single
+      entity_id: binary_sensor.wall_switch_right_158d0001639c9d
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: switch.drying_rack
+
+- id: drying_rack_light_on_off
+  alias: drying rack down
+  initial_state: 'on'
+  trigger:
+  - platform: event
+    event_type: click
+    event_data:
+      click_type: both
+      entity_id: binary_sensor.wall_switch_both_158d0001639c9d
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.drying_rack_light
+
+- id: open door
+  alias: Open Door Lights On
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001f3e972
+    from: 'off'
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 
+        switch.wall_switch_ln_left_158d0001a2cb25
+      state: 'off'
+    - condition: state
+      entity_id: 
+        switch.wall_switch_ln_right_158d0001a2cb25
+      state: 'off'
+    - condition: state
+      entity_id: sun.sun
+      state: 'below_horizon'
+
+  action:
+  - delay: 00:00:01
+  - service: switch.turn_on
+    data:
+      entity_id: 
+        - switch.wall_switch_ln_left_158d0001a2cb25
+        - switch.wall_switch_ln_right_158d0001a2cb25
+
+- id: kitchen ligths on
+  alias: Enter Kitchen Lights On
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00011c0f09
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 
+        switch.wall_switch_ln_right_158d00019cf80f
+      state: 'off'
+    - condition: state
+      entity_id: 
+        switch.wall_switch_ln_left_158d00019cf80f
+      state: 'off'
+      #    - condition: state
+      #      entity_id: sun.sun
+      #      state: 'below_horizon'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: 
+        - switch.wall_switch_ln_right_158d00019cf80f
+        - switch.wall_switch_ln_left_158d00019cf80f
+
+- id: kitchen ligths off
+  alias: Leave Kitchen 1.5 Min Lights Off
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00011c0f09
+    from: 'on'
+    to: 'off'
+    for: '00:00:30'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: switch.wall_switch_ln_right_158d00019cf80f
+        state: 'on'
+      - condition: state
+        entity_id: switch.wall_switch_ln_left_158d00019cf80f
+        state: 'on'
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: 
+        - switch.wall_switch_ln_right_158d00019cf80f
+        - switch.wall_switch_ln_left_158d00019cf80f
+
+- id: away mode
+  alias: 'Away Mode'
+  trigger:
+    - platform: state
+      entity_id: group.family
+      to: 'not_home'
+
+  condition:
+    - condition: state
+      entity_id: group.family
+      state: 'not_home'
+
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: group.all_switches
+
+- id: family state change notification
+  alias: 'family state change notification'
+  trigger:
+    - platform: state
+      entity_id: 
+        - device_tracker.gexin_bt
+        - device_tracker.gexin_wifi
+        - device_tracker.pi_fda50693a4e24fb1afcfc6eb07647825
+
+  action:
+    - service: ifttt.trigger
+      data_template:
+        event: 'HA_Trigger'
+        value1: "{{ (trigger.to_state.state) }}"
+        value2: "{{ trigger.entity_id }}"
