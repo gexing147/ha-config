@@ -23,15 +23,13 @@ frontend:
 config:
 
 logger:
-  default: error
-  logs:
-    homeassistant.components.xiaomi_aqara: debug
+  default: debug
 
 mqtt:
   broker: 192.168.123.128
   port: 1883
-  username: pi
-  password: raspberry    
+  username: homeassistant
+  password: mqtt    
   
 device_tracker:
   - platform: nmap_tracker
@@ -48,12 +46,33 @@ xiaomi_aqara:
     - mac: 286c0785ed4d
       key: xrqq1hnjcx4d2uuo
       
-vacuum:
-  - platform: xiaomi_miio
-    host: 192.168.123.181
-    token: 34595a446c7666526d31536f7338726f
+      #vacuum:
+      #  - platform: xiaomi_miio
+      #    host: 192.168.123.181
+      #    token: 4a526955736463356c6c6b5645425638
+zinguo:
+  token: RjIG3NRDhAyryV-c333zczXM9vrGGMS3doujJe4L8qVz_cocwDg-7SdI9KtiEWuO
+  mac: 84F3EB1BAF77
+  username: '17782366562'
+  password: 'ge4321085'
+  name: warming1
     
 switch:
+  - platform: zinguo
+    warmingSwitch1: 制暖1
+    warmingSwitch2: 制暖2
+    windSwitch: 吹风
+    lightSwitch: 照明
+    ventilationSwitch: 排气
+
+
+  - platform: mqtt
+    name: bathroom_light
+    state_topic: hassmart/switch/hassmart_1key_module_457921_1/state
+    command_topic: hassmart/switch/hassmart_1key_module_457921_1/set
+    qos: 1
+    retain: false
+
   - platform: broadlink
     host: 192.168.123.214
     mac: '34:EA:34:58:71:F9'
@@ -64,11 +83,24 @@ switch:
         command_off: 'sgBwAg0PDQ8NRg0cGg4NHBoOGg8NGw0cGg4aDhoPGg8MHA0bGw4NGxoPDRsbDhoOGg8aDhsOGg4aDxoOGg8aDhoPGg4aDxoOGg4aDxoPGg4aDhsOGg4aDxoODhsaDhoPGg4aDxoOGg8aAAFcDQ4NEAxGDhsaDg0cGg8aDg0bDRwaDhoPGg4aDw0bDRwaDg0cGg4NHBoOGg4aDxoPGg4aDhsOGg8aDhoOGg8aDhoPGg4aDxoOGg8aDhoPGg4aDxoOGg8NGxoPGg4aDhsOGg4bDhoAAVwNDw0PDUYNGxoODRwaDxoODRwMHBoOGg8aDhoPDRwMHBoPDBwaDg0cGg4aDxoOGg8aDhoPGg4aDxoOGg8aDhoPGg4aDhsOGg4aDxoOGw4aDxoOGg4aDwwcGg8aDhoPGg4bDhoOGgABXA0PDQ8NRg0bGw4MHBoPGg4NHA0bGg8aDhoPGg4NHAwcGg8NGxoODRwaDhoPGg4aDxoPGg4aDxoOGg4aDxoOGg8aDhsOGg4aDhsOGg8aDhoPGg4aDxoODRsaDxoOGg8aDhoPGg8aAAFcDQ8NDw1GDRsaDw0bGw4aDg0cDRsaDxoOGw4aDg0cDRsaDwwcGg8NGxoPGg4aDhsOGg4bDhoPGg4aDhsOGg4aDxoOGg8aDhoPGg4aDxoOGg4aDxoPGg4NHBoOGg8aDhoPGg4aDhoAAV0NDw0PDUYNGxoPDRsaDxoODRwNGxsOGg4aDxoODRwNGxoPDRsaDwwcGg8aDhoPGg4aDhsOGg4bDhoOGg8aDhoPGg4bDhoOGg8aDxkPGg4aDhsOGg8aDg0bGg8aDhsOGg8aDhoPGgAF3AAAAAAAAAAA'
       drying_rack_light:
         command_on: 'sQAIAg4NDw0ORQ8aGw0OGxsNGw4OGg4bGw0cDRsNHA0NGw4bGw0OGxsNDhocDRsOGw0bDRwNGw4bDRsNHA0bDRwNGw0cDRsNHA0bDRwNGw0bDhsNGw4bDRsNDxobDg0bGw4bDRwMHA0bAAFbDg4ODg5FDhsbDQ4aHA0bDQ4bDhobDhsNHA0bDQ4bDhobDg4aGw4NGxwNGw0bDhsNGw0cDRsOGw0bDRwNGw0cDRsNHA0bDRwNGw0cDRsNGw4bDRwNGw0OGxsNDhsbDRsOGw0bDRwAAVsODg0ODkYOGhsNDxobDRwNDhoOGxsNHA0bDRwNDhoOGxsNDhsbDQ4bGw0bDhsNHA0bDRsOGw0bDRwNGw0cDRsOGw0bDRwNGw0cDRsNGw4bDRwNGw0cDQ4aGw4OGhwNGw0bDhsNHAABWw4ODg4ORQ4aHA0OGhwNGw0OGw4aHA0bDRwNGw0OGw4aGw4NGxsNDxobDhsNGw0cDRsNHA0bDRwNGw0cDRsNHA0bDRsOGw0cDRsNGw4bDRwNGw0bDhsNDhsbDQ4aHA0bDhsNGw0cAAFbDw0ODg5FDhsbDQ4bGw0bDQ8aDhsbDRsOGw0cDA8aDhocDQ4aHA0OGxsNGw0cDRsNHA0bDRsOGw0cDRsNHAwcDRwNGw0bDhsNGw0cDRsNHA0bDRwNGw0PGhsNDhsbDRsOGw0cDRsABdw='
+      air_condition:
+        command_on: 'JgB2AXQ1ECkQDRAMEQwQDRAMEQwQDRANEAwQDRAMESgRDBANEA0QDBANEA0QDBANEA0QDBANEA0QDBANEA0QDBANECkQDRApECkQKRApECkQKRANECkQKRApECkQKRApECkQKRApEA0QDRAMEA0PDhAMEA0QDRANDyoPKg8NEA0PKg8qDyoPKg8ODw0PKg8qEA0QDRANDyoQDBANDyoPDg8NEA0QKQ8ODyoPKg8OECkPKg8qDw4PKRANEA0PDRANEA0QDBANEA0QKRApECkQKRApECkQKQ8qDyoQKRApDyoRKQ8NEA0QDQ8NDw4QDRAMDw4QKQ8qDyoQDQ8qDyoPKg8ODw0PDg8OECkPDRANEA0QKQ8qDyoPDhApDyoQDA8OEA0QKRANDyoQDBANECkQKRApEA0QKRANEAwQDRAMEQwQDRAMEA0QKRApECkQKRApESgRKBEpEAwQDRANEAwQKREMEA0QKRApECkQKRApEA0QKRApEAwQAA0FAAA='
+        command_off: 'JgB2AXM2ECkQDRANDw4PDRANDw4PDg8NDw4PDRANDyoPDg8NEA0QDQ8ODw0PDg8ODw0PDg8ODw0QDQ8ODw0PDg8NECkQDRAoESgRKRApECkQKRANDyoQKRAqDykQKg8pECkQKRApEA4PDQ8ODw4PDQ8ODw0QDRANDykQKRAODw0QKBEoESkQKRANEA0PKRApEA4PDRANDykQDg8NECkQDQ8ODw0QKg8NECgRKBENDykQKRApEA4PKRAODw0QDQ8ODw0PDg8ODw0QKBEoESgRKRApECkQKRApECkQKRApECkQKRAODw4PDQ8ODw0QDQ8ODw0QKRApECkQDRAoESgRKBENDw4PDg8NDykQDg8ODw0PKg8pECoQDQ8pECkQDg8NEA0PKRAODyoPDg8NECgRKRApEA0PKRENDw4PDQ8ODw4PDQ8ODw4PKRApECkQKRApECkQKRApEA4PDRANDw4PDRAoEQ0PKREoESgRKBEoESgRDQ8pEA4PAA0FAAA='
+
+panel_iframe:
+    nodered:
+        title: 'Node-Red'
+        icon: 'mdi:shuffle-variant'
+        url: 'http://www.wustman.com:1880/'
+hello_world:
+history:
+logbook:
 http:
   # Secrets are defined in the file secrets.yaml
   # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   # base_url: example.duckdns.org:8123
+    base_url: loaclhost:8123
 
 # Checks for available updates
 # Note: This component will send some information about your system to
@@ -99,6 +131,8 @@ sun:
 
 # Weather prediction
 sensor:
+  - platform: zinguo
+    temperature: 洗手间温度
   - platform: yr
 
 # Text to speech
@@ -106,7 +140,7 @@ tts:
   - platform: google
 
 # Cloud
-cloud:
+#cloud:
 
 group: !include_dir_merge_named  group
 automation: !include automations.yaml

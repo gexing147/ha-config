@@ -1,5 +1,5 @@
-- id: drying_rack_up
-  alias: drying rack up
+- id: drying_rack_down
+  alias: drying rack down
   initial_state: 'on'
   trigger:
   - platform: event
@@ -12,8 +12,8 @@
     data:
       entity_id: switch.drying_rack
 
-- id: drying_rack_down
-  alias: drying rack down
+- id: drying_rack_up
+  alias: drying rack up
   initial_state: 'on'
   trigger:
   - platform: event
@@ -27,7 +27,7 @@
       entity_id: switch.drying_rack
 
 - id: drying_rack_light_on_off
-  alias: drying rack down
+  alias: drying rack light on off
   initial_state: 'on'
   trigger:
   - platform: event
@@ -40,8 +40,9 @@
     data:
       entity_id: switch.drying_rack_light
 
-- id: open door
+- id: open door lights on
   alias: Open Door Lights On
+  initial_state: 'on'
   trigger:
   - platform: state
     entity_id: binary_sensor.door_window_sensor_158d0001f3e972
@@ -52,10 +53,14 @@
       entity_id: 
         switch.wall_switch_ln_left_158d0001a2cb25
       state: 'off'
+      for:
+          minutes: 1
     - condition: state
       entity_id: 
         switch.wall_switch_ln_right_158d0001a2cb25
       state: 'off'
+      for:
+          minutes: 1
     - condition: state
       entity_id: sun.sun
       state: 'below_horizon'
@@ -70,9 +75,13 @@
 
 - id: kitchen ligths on
   alias: Enter Kitchen Lights On
+  initial_state: 'on'
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_sensor_158d00011c0f09
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00012916e1
     to: 'on'
   condition:
     - condition: state
@@ -95,21 +104,35 @@
 
 - id: kitchen ligths off
   alias: Leave Kitchen 1.5 Min Lights Off
+  initial_state: 'on'
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_sensor_158d00011c0f09
     from: 'on'
     to: 'off'
     for: '00:00:30'
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00012916e1
+    from: 'on'
+    to: 'off'
+    for: '00:00:30'
   condition:
-    condition: or
+    condition: and
     conditions:
       - condition: state
-        entity_id: switch.wall_switch_ln_right_158d00019cf80f
-        state: 'on'
+        entity_id: binary_sensor.motion_sensor_158d00011c0f09
+        state: 'off'
       - condition: state
-        entity_id: switch.wall_switch_ln_left_158d00019cf80f
-        state: 'on'
+        entity_id: binary_sensor.motion_sensor_158d00012916e1
+        state: 'off'
+      - condition: or
+        conditions:
+            - condition: state
+              entity_id: switch.wall_switch_ln_right_158d00019cf80f
+              state: 'on'
+            - condition: state
+              entity_id: switch.wall_switch_ln_left_158d00019cf80f
+              state: 'on'
   action:
   - service: switch.turn_off
     data:
@@ -117,12 +140,92 @@
         - switch.wall_switch_ln_right_158d00019cf80f
         - switch.wall_switch_ln_left_158d00019cf80f
 
+- id: bathroom ligths on
+  alias: Enter Bathroom Lights On
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d000222f49a
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 
+        switch.bathroom_light
+      state: 'off'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: 
+        - switch.bathroom_light
+
+- id: bathroom ligths off
+  alias: Leave Bathroom 10 Min Lights Off
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d000222f49a
+    from: 'on'
+    to: 'off'
+    for: '00:10:00'
+  condition:
+    - condition: state
+      entity_id: switch.bathroom_light
+      state: 'on'
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: 
+        - switch.bathroom_light
+
+- id: second bedroom ligths on
+  alias: Enter Second Bedroom Lights On
+  initial_state: 'off'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00012916e1
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: 
+        switch.wall_switch_ln_158d00019d0241
+      state: 'off'
+      #    - condition: state
+      #      entity_id: sun.sun
+      #      state: 'below_horizon'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: 
+        - switch.wall_switch_ln_158d00019d0241
+
+- id: second bedroom ligths off
+  alias: Leave Second Bedroom 1.5 Min Lights Off
+  initial_state: 'off'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_158d00012916e1
+    from: 'on'
+    to: 'off'
+    for: '00:00:30'
+  condition:
+      - condition: state
+        entity_id: switch.wall_switch_ln_158d00019d0241
+        state: 'on'
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id: 
+        - switch.wall_switch_ln_158d00019d0241
+
+
 - id: away mode
   alias: 'Away Mode'
+  initial_state: 'off'
   trigger:
     - platform: state
       entity_id: group.family
       to: 'not_home'
+      for: '00:10:00'
 
   condition:
     - condition: state
@@ -136,6 +239,7 @@
 
 - id: family state change notification
   alias: 'family state change notification'
+  initial_state: 'off'
   trigger:
     - platform: state
       entity_id: 
@@ -149,3 +253,26 @@
         event: 'HA_Trigger'
         value1: "{{ (trigger.to_state.state) }}"
         value2: "{{ trigger.entity_id }}"
+
+- id: turn_all_lights_off
+  alias: turn all lights off
+  initial_state: 'on'
+  trigger:
+  - platform: event
+    event_type: click
+    event_data:
+      click_type: both
+      entity_id: binary_sensor.wall_switch_both_158d000170c10f
+  action:
+  - service: switch.turn_off
+    data:
+      entity_id:
+        - group.living_room
+        - group.study
+        - group.kitchen
+        - group.bath_room
+        - switch.wall_switch_ln_158d00019d02de
+        - switch.wall_switch_ln_158d00019d0241 
+        - switch.wall_switch_ln_158d00019d0212
+        - switch.wall_switch_ln_158d00019d0a72
+

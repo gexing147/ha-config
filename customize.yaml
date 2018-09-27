@@ -21,3 +21,19 @@ switch.wall_switch_ln_right_158d00019cf80f:
   friendly_name: 厨房右灯
 switch.wall_switch_ln_left_158d00019cf80f:
   friendly_name: 厨房左灯
+switch.bathroom_light:
+  friendly_name: 镜柜灯
+binary_sensor.motion_sensor_158d00011c0f09:
+  friendly_name: 厨房人体传感器_左
+binary_sensor.motion_sensor_158d00012916e1:
+  friendly_name: 厨房人体传感器_右
+binary_sensor.motion_sensor_158d000222f49a:
+  friendly_name: 洗手间人体传感器
+group.bath_room:
+  friendly_name: 洗手间
+group.study:
+  friendly_name: 书房
+group.living_room:
+  friendly_name: 客餐厅
+group.kitchen:
+  friendly_name: 厨房
